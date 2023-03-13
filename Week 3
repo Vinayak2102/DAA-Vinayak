@@ -1,0 +1,40 @@
+//Program to accept number of test cases, input a sorted array with a key and print the number of keys in the array.
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main()
+{
+  int n, m, x, a[50], b, i, j, f;
+  printf("Enter number of test cases: ");
+  scanf("%d", &n);
+  for(i=0;i<n;i++)
+  {
+    printf("Enter elements in the array: ");
+    scanf("%d", &m);
+    for(j=0;j<m;j++)
+    {
+      scanf("%d", &a[j]);
+    }
+    printf("Enter key: ");
+    scanf("%d", &x);
+    f=0;
+    for(j=0;j<m;j++)
+    {
+      if(a[j]==x)
+      {
+        f++;
+      }
+    }
+    if(f==0)
+    {
+      printf("Key not found.\n");
+    }
+    else
+    {
+      printf("%d - %d", x, f);
+    }
+  }
+}
+
