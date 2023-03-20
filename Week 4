@@ -1,0 +1,34 @@
+//Selection sort
+#include <stdio.h>
+
+
+int main()
+{
+    int arr[10];
+    int i, j, k, x;
+    printf("Enter 10 numbers: ");
+    for(i=0;i<10;i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    for(i=0;i<10;i++)
+    {
+        k=i;
+        for(j=i+1;j<10;j++)
+        {
+            if(arr[j]<arr[k])
+            {
+                k=j;
+            }
+        }
+        x=arr[i];
+        arr[i]=arr[k];
+        arr[k]=x;
+    }
+    for(i=0;i<10;i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
