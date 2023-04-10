@@ -1,71 +1,129 @@
-//Linear search
-#include<stdio.h>
-#include<stdlib.h>
-int main()
-{
-    int x, i, m, n;
-    printf("Enter array size: ");
-    scanf("%d", &n);
-    int arr[n];
-    printf("Input array: ");
-    for(i=0;i<n;i++)
-    {
-        scanf("%d", &arr[i]);
-    }
-    printf("Enter number to search: ");
-    scanf("%d", &x);
-    for(i=0;i<n;i++)
-    {
-        if(x==arr[i])
-        {
-            printf("\nNumber found at position %d", i+1);
-            break;
-        }
-        if(i==10-1)
-        {
-            printf("\nNumber not found");
+//Given an array of nonnegative integers, design a linear algorithm and implement it using a program to find whether given key element is present in the array or not. Also, find total number of comparisons for each input case. (Time Complexity = O(n), where n is the size of input)
+#include <stdio.h>
+
+int linear_search(int arr[], int size, int key, int *comparisons) {
+    for (int i = 0; i < size; i++) {
+        (*comparisons)++;
+        if (arr[i] == key) {
+            return i+1;
         }
     }
+    return -1;
+}
+int main() {
+    int num_arrays, size, key, pos, comparisons;
+    scanf("%d", &num_arrays);
+
+    for (int i = 0; i < num_arrays; i++) {
+        scanf("%d", &size);
+        int arr[size];
+        for (int j = 0; j < size; j++) {
+            scanf("%d", &arr[j]);
+        }
+        scanf("%d", &key);
+        comparisons = 0;
+        pos = linear_search(arr, size, key, &comparisons);
+        if (pos != -1) {
+            printf("Present %d\n", i+1);
+        } else {
+            printf("Not present\n");
+        }
+        printf("Comparisons: %d\n", comparisons);
+    }
+
     return 0;
 }
 
-//Binary search
-#include<stdio.h>
-#include<stdlib.h>
-int main()
-{
-    int x, i, m, n;
-    printf("Enter array size: ");
-    scanf("%d", &n);
-    int arr[n];
-    printf("Input array: ");
-    for(i=0;i<n;i++)
-    {
+
+
+//Given an already sorted array of positive integers, design an algorithm and implement it using a program to find whether given key element is present in the array or not. Also, find total number of comparisons for each input case. (Time Complexity = O(nlogn), where n is the size of input).
+#include <stdio.h>
+
+int binary_search(int arr[], int size, int key, int *comparisons) {
+    int left = 0, right = size - 1;
+
+    while (left <= right) {
+        (*comparisons)++;
+        int mid = (left + right) / 2;
+        if (arr[mid] == key) {
+            return mid;
+        } else if (arr[mid] < key) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int size, key, pos, comparisons;
+    scanf("%d", &size);
+    int arr[size];
+    for (int i = 0; i < size; i++) {
         scanf("%d", &arr[i]);
     }
-    printf("Enter number to search: ");
-    scanf("%d", &x);
-    i=0;
-    while(i!=n)
-    {
-        m=(i+n)/2;
-        if(x==arr[m])
-        {
-            printf("\nNumber found at position %d", m+1);
-            break;
-        }
-        else if(x>arr[m])
-        {
-            i=m+1;
-        }
-        else
-        {
-            n=m;
-        }
+    scanf("%d", &key);
+    comparisons = 0;
+    pos = binary_search(arr, size, key, &comparisons);
+    if (pos != -1) {
+        printf("Present at position %d\n", pos+1);
+    } else {
+        printf("Not present\n");
     }
-        if(arr[m]!=x)
-        {
-            printf("\nNumber not found");
-        }
+    printf("Comparisons: %d\n", comparisons);
+
     return 0;
 }
+
+//Given an already sorted array of positive integers, design an algorithm and implement it using a program to find whether a given key element is present in the sorted array or not. For an array arr[n], search at the indexes arr[0], arr[2], arr[4],.....,arr[2k] and so on. Once the interval (arr[2k] < key < arr[ 2k+1] ) is found, perform a linear search operation from the index 2k to find the element key. (Complexity < O(n), where n is the number of elements need to be scanned for searching)
+
+#include <stdio.h>
+#include <math.h>
+
+int jump_search(int arr[], int size, int key) {
+    int step = sqrt(size);
+    int prev = 0;
+
+    while (arr[min(step, size) - 1] < key) {
+        prev = step;
+        step += sqrt(size);
+        if (prev >= size) {
+            return -1;
+        }
+    }
+    while (arr[prev] < key) {
+        prev++;
+        if (prev == min(step, size)) {
+            return -1;
+        }
+    }
+    if (arr[prev] == key) {
+        return prev;
+    }
+    return -1;
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+    while (T--) {
+        int size, key, pos;
+        scanf("%d", &size);
+        int arr[size];
+        for (int i = 0; i < size; i++) {
+            scanf("%d", &arr[i]);
+        }
+        scanf("%d", &key);
+        pos = jump_search(arr, size, key);
+        if (pos != -1) {
+            printf("Present\n");
+        } else {
+            printf("Not Present\n");
+        }
+    }
+
+    return 0;
+}
+
