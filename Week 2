@@ -1,60 +1,142 @@
-\\using jump search to find different numbers in different arrays
+/*
+Given a sorted array of positive integers containing few duplicate elements, design an algorithm and implement it using a program to find whether the given key element is present in the array or not. If present, then also find the number of copies of given key. (Time Complexity = O(log n))
+Input format:
+The first line contains number of test cases, T.
+For each test case, there will be three input lines.
+First line contains n (the size of array).
+Second line contains space-separated integers describing array.
+Third line contains the key element that need to be searched in the array.
+Output format:
+The output will have T number of lines.
+For each test case T, output will be the key element and its number of copies in the array if the key element is present in the array otherwise print “Key not present”.
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
 
-int jump(int arr[], int size, int key)
-{
-  int i=0;
-  int s=sqrt(size);
-  while(arr[s]<=key && s<size)
-  {
-    i=s;
-    s+=sqrt(size);
-    if(s>size-1)
-    {
-      s=size;
-    }
-  }
-  for(i=i;i<s;i++)
-  {
-    if(arr[i]==key)
-    {
-      return i+1;
-    }
-  }
-  return -1;
-}
-
 int main()
 {
-  int n, j, i, size, x=0, key;
-  int arr[20];
-  int ans[10];
+  int n, m, x, a[50], b, i, j, f;
+  printf("Enter number of test cases: ");
   scanf("%d", &n);
   for(i=0;i<n;i++)
   {
-    scanf("%d", &size);
-    for(j=0;j<size;j++)
+    printf("Enter elements in the array: ");
+    scanf("%d", &m);
+    for(j=0;j<m;j++)
     {
-      scanf("%d", &arr[j]);
+      scanf("%d", &a[j]);
     }
-    scanf("%d", &key);
-    ans[x]=jump(arr, size, key);
-    x++;
-  }
-  for(i=0;i<x;i++)
-  {
-    if(ans[i]==-1)
+    printf("Enter key: ");
+    scanf("%d", &x);
+    f=0;
+    for(j=0;j<m;j++)
     {
-      printf("Not found\n");
+      if(a[j]==x)
+      {
+        f++;
+      }
+    }
+    if(f==0)
+    {
+      printf("Key not found.\n");
     }
     else
     {
-      printf("Found at %d\n", ans[i]);
+      printf("%d - %d", x, f);
     }
   }
-  return 0;
 }
+
+/*
+Given a sorted array of positive integers, design an algorithm and implement it using a program to find three indices i, j, k such that arr[i] + arr[j] = arr[k].
+Input format:
+The first line contains number of test cases, T.
+For each test case, there will be two input lines.
+First line contains n (the size of array).
+Second line contains space-separated integers describing array.
+Output:
+The output will have T number of lines.
+For each test case T, print the value of i, j and k, if found else print “No sequence found”.
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+void findIndices(int arr[], int n) {
+    int i, j, k;
+    for (k = n-1; k >= 2; k--) {
+        i = 0;
+        j = k-1;
+        while (i < j) {
+            if (arr[i] + arr[j] == arr[k]) {
+                printf("%d %d %d\n", i+1, j+1, k+1);
+                return;
+            } else if (arr[i] + arr[j] < arr[k]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+    }
+    printf("No sequence found\n");
+}
+int main() {
+    int t, n, i;
+    scanf("%d", &t);
+    for (i = 0; i < t; i++) {
+        scanf("%d", &n);
+        int arr[n];
+        int j;
+        for (j = 0; j < n; j++) {
+            scanf("%d", &arr[j]);
+        }
+        findIndices(arr, n);
+    }
+    return 0;
+}
+
+*/
+Given an array of nonnegative integers, design an algorithm and a program to count the number of pairs of integers such that their difference is equal to a given key, K.
+Input format:
+The first line contains number of test cases, T.
+For each test case, there will be three input lines.
+First line contains n (the size of array).
+Second line contains space-separated integers describing array. Third line contains the key element.
+Output format:
+The output will have T number of lines.
+For each test case T, output will be the total count i.e., number of times such pair exists.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+int countPairs(int arr[], int n, int k) {
+    int count = 0;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (abs(arr[i] - arr[j]) == k) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    while (t--) {
+        int n, k;
+        scanf("%d", &n);
+        int arr[n];
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        scanf("%d", &k);
+        int count = countPairs(arr, n, k);
+        printf("%d\n", count);
+    }
+    return 0;
+}
+
 
