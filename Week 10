@@ -1,0 +1,173 @@
+//select activities
+
+
+#include <iostream>
+using namespace std;
+void selectActivities(int start[], int finish[], int n)
+{
+for (int i = 0; i < n - 1; i++)
+{
+for (int j = 0; j < n - i - 1; j++)
+{
+if (finish[j] > finish[j + 1])
+{
+int tempFinish = finish[j];
+finish[j] = finish[j + 1];
+finish[j + 1] = tempFinish;
+int tempStart = start[j];
+start[j] = start[j + 1];
+start[j + 1] = tempStart;
+}
+}
+}
+int selectedStart[n];
+int selectedFinish[n];
+selectedStart[0] = start[0];
+selectedFinish[0] = finish[0];
+int selectedCount = 1;
+int lastFinishTime = finish[0];
+for (int i = 1; i < n; i++)
+{
+if (start[i] >= lastFinishTime)
+{
+selectedStart[selectedCount] = start[i];
+selectedFinish[selectedCount] = finish[i];
+selectedCount++;
+lastFinishTime = finish[i];
+}
+}
+cout << "Maximum number of non-conflicting activities: " << selectedCount << endl;
+cout << "Selected activities:" << endl;
+for (int i = 0; i < selectedCount; i++)
+{
+cout << "Start: " << selectedStart[i] << "\tFinish: " << selectedFinish[i] << endl;
+}
+}
+int main()
+{
+int n;
+cout << "Enter the number of activities: ";
+cin >> n;
+int start[n];
+int finish[n];
+cout << "Start time: ";
+for (int i = 0; i < n; i++)
+{
+cin >> start[i];
+}
+cout << "Finish time: ";
+for (int i = 0; i < n; i++)
+{
+cin >> finish[i];
+}
+selectActivities(start, finish, n);
+return 0;
+}
+
+
+//Deadline
+
+#include <iostream>
+using namespace std;
+struct Task {
+int duration;
+int deadline;
+};
+void selectTasks(Task tasks[], int n) {
+for (int i = 0; i < n - 1; i++) {
+for (int j = 0; j < n - i - 1; j++) {
+if (tasks[j].deadline > tasks[j + 1].deadline) {
+Task temp = tasks[j];
+tasks[j] = tasks[j + 1];
+tasks[j + 1] = temp;
+}
+}
+}
+int selectedCount = 0;
+Task selectedTasks[n];
+for (int i = 0; i < n; i++) {
+if (tasks[i].deadline >= selectedCount + 1) {
+selectedTasks[selectedCount] = tasks[i];
+selectedCount++;
+}
+}
+cout << "Maximum number of tasks that can be completed: " << selectedCount << endl;
+cout << "Selected tasks:" << endl;
+for (int i = 0; i < selectedCount; i++) {
+cout << "Duration: " << selectedTasks[i].duration << "\tDeadline: " << selectedTasks[i].deadline << endl;
+}
+}
+int main() {
+int n;
+cout << "Enter the number of tasks: ";
+cin >> n;
+Task tasks[n];
+cout << "Duration: ";
+for (int i = 0; i < n; i++) {
+cin >> tasks[i].duration;
+}
+cout << "Deadline: ";
+for (int i = 0; i < n; i++) {
+cin >> tasks[i].deadline;
+}
+selectTasks(tasks, n);
+return 0;
+}
+
+
+//Majority Element
+
+#include <iostream>
+using namespace std;
+bool hasMajorityElement(int arr[], int n) {
+sort(arr, arr + n);
+int count = 1;
+for (int i = 1; i < n; i++) {
+if (arr[i] == arr[i - 1]) {
+count++;
+if (count > n / 2) {
+return true;
+}
+} else {
+count = 1;
+}
+}
+return false;
+}
+double findMedian(int arr[], int n) {
+sort(arr, arr + n);
+if (n % 2 == 1) {
+return arr[n / 2];
+} else {
+int mid1 = n / 2 - 1;
+int mid2 = n / 2;
+return (arr[mid1] + arr[mid2]) / 2.0;
+}
+}
+int main() {
+int n;
+cout << "Enter the size of the array: ";
+cin >> n;
+int arr[n];
+cout << "Enter the elements of the array: ";
+for (int i = 0; i < n; i++) {
+cin >> arr[i];
+}
+bool hasMajority = hasMajorityElement(arr, n);
+if (hasMajority) {
+cout << "Majority element exists." << endl;
+} else {
+cout << "Majority element does not exist." << endl;
+}
+double median = findMedian(arr, n);
+cout << "Median of the array: " << median << endl;
+return 0;
+}
+
+
+
+
+
+
+
+
