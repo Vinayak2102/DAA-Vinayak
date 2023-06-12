@@ -1,1 +1,189 @@
+//Shortest distance
+#include <bits/stdc++.h>
+using namespace std;
+int distance(int n, int dis[], int vis[])
+{
+int mini = INT_MAX;
+int index = -1;
+for (int i = 0; i < n; i++)
+{
+if (!vis[i] && dis[i] < mini)
+{
+mini = dis[i];
+index = i;
+}
+}
+return index;
+}
+int main()
+{
+int n ;
+cout<<"Enter size: ";
+cin>>n;
+int graph[n][n];
+cout<<"Enter the graph: "<<endl;
+for (int i = 0; i < n; i++)
+{
+for (int j = 0; j < n; j++)
+{
+cin >> graph[i][j];
+}
+}
+int dis[n];
+int vis[n];
+int parent[n];
+for (int i = 0; i < n; i++)
+{
+dis[i] = 1e4;
+vis[i] = 0;
+parent[i] = -1;
+}
+int src = 0;
+dis[src] = 0;
+for (int i = 0; i < n - 1; i++)
+{
+int u = distance(n, dis, vis);
+vis[u] = 1;
+for (int v = 0; v < n; v++)
+{
+int w = graph[u][v];
+if (!vis[v] && w > 0 && dis[u] != 1e4 && dis[u] + w < dis[v])
+{
+dis[v] = dis[u] + w;
+parent[v] = u;
+}
+}
+}
+for (int i = 1; i < n; i++)
+{
+cout << " Shortest path " << i + 1 << " ";
+if (dis[i] == 1e4)
+{
+cout << " No path exists " << endl;
+}
+else
+{
+int v = i;
+while (parent[v] != -1)
+{
+cout << " " << parent[v] + 1 << " ";
+v = parent[v];
+}
+cout << " "
+<< "distance is : " << dis[i] << endl;
+}
+}
+}
+
+
+//Bellman Ford's
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+cout<<"Enter the size: ";
+int n;
+cin >> n;
+int graph[n][n];
+cout<<"Enter the graph: "<<endl;
+for (int i = 0; i < n; i++)
+{
+for (int j = 0; j < n; j++)
+{
+cin >> graph[i][j];
+}
+}
+int dis[n];
+int src = 0;
+dis[src] = 0;
+int parent[n];
+parent[src] = -1;
+for (int i = 1; i < n; i++)
+{
+dis[i] = 1e4;
+parent[i] = -1;
+}
+for (int k = 0; k < n - 1; k++)
+{
+for (int i = 0; i < n; i++)
+{
+for (int j = 0; j < n; j++)
+{
+if (graph[i][j] != 0 && (dis[i] + graph[i][j] < dis[j]))
+{
+dis[j] = dis[i] + graph[i][j];
+parent[j] = i;
+}
+}
+}
+}
+cout<<"Path using Bellman Ford's algorithm is:"<<endl;
+for (int i = 0; i < n; i++)
+{
+int v = i;
+while (parent[v] != -1)
+{
+cout << parent[v] + 1 << " ";
+v = parent[v];
+}
+cout << i + 1 << " : " << dis[i] << endl;
+}
+}
+
+
+//DFS shortest path
+
+#include <bits/stdc++.h>
+using namespace std;
+void dfs(int node, int graph[][100], int vis[], int n, int b, int temp, int &mini, int k)
+{
+if (k == 0 && node == b)
+{
+mini = min(mini, temp);
+}
+vis[node] = 1;
+if (k <= 0)
+{
+return;
+}
+for (int i = 0; i < n; i++)
+{
+if (graph[node][i] > 0 && !vis[i])
+{
+dfs(i, graph, vis, n, b, temp + graph[node][i], mini, k - 1);
+}
+}
+}
+int main()
+{
+cout<<"Enter size: ";
+int n;
+cin >> n;
+int graph[n][100];
+cout<<"Enter the graph :"<<endl;
+for (int i = 0; i < n; i++)
+{ for (int j = 0; j < n; j++)
+{
+cin >> graph[i][j]; }
+}
+cout<<"Enter the values you want to find path between : ";
+int a, b;
+cin >> a >> b;
+a = a - 1;
+b = b - 1;
+int vis[n] = {0};
+int mini = 1e4;
+int temp = 0,k;
+cout<<"Enter the number of required edges: ";
+cin >> k;
+dfs(a, graph, vis, n, b, temp, mini, k);
+if (mini < 1e4)
+{
+cout<<"Weight of shortest path from "<<a+1<< " to "<<b+1<< " with "<<k<<" edges is "<<mini;
+}
+else {
+cout << " no path of length k is available"; }
+}
+
 
