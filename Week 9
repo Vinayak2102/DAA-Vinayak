@@ -1,1 +1,191 @@
+//floyd Warshall
+
+#include <stdio.h>
+#define MAX_VERTICES 100
+#define INF 99999
+void floydWarshall(int dist[][MAX_VERTICES], int V)
+{
+int i, j, k;
+int path[V][V];
+for (i = 0; i < V; i++)
+{
+for (j = 0; j < V; j++)
+{
+path[i][j] = dist[i][j];
+}
+}
+for (k = 0; k < V; k++)
+{
+for (i = 0; i < V; i++)
+{
+for (j = 0; j < V; j++)
+{
+if (path[i][k] != INF && path[k][j] != INF && path[i][k] + path[k][j] < path[i][j])
+{
+path[i][j] = path[i][k] + path[k][j];
+}
+}
+}
+}
+printf("Shortest Distance Matrix:\n");
+for (i = 0; i < V; i++)
+{
+for (j = 0; j < V; j++)
+{
+if (path[i][j] == INF)
+{
+printf("INF\t");
+}
+else
+{
+printf("%d\t", path[i][j]);
+}
+}
+printf("\n");
+}
+}
+int main()
+{
+int V;
+printf("Enter the number of vertices: ");
+scanf("%d", &V);
+int dist[MAX_VERTICES][MAX_VERTICES];
+printf("Enter the adjacency matrix (Use -1 for INF):\n");
+for (int i = 0; i < V; i++)
+{
+for (int j = 0; j < V; j++)
+{
+scanf("%d", &dist[i][j]);
+if (dist[i][j] == -1) {
+dist[i][j] = INF;
+}
+}
+}
+floydWarshall(dist, V);
+return 0;
+}
+
+
+
+//Knapsack
+
+#include <stdio.h>
+void fractionalKnapsack(int N, int weights[], int values[], int capacity)
+{
+float ratio[N];
+for (int i = 0; i < N; i++)
+{
+ratio[i] = (float)values[i] / weights[i];
+}
+for (int i = 0; i < N - 1; i++)
+{
+for (int j = i + 1; j < N; j++)
+{
+if (ratio[i] < ratio[j])
+{
+float temp = ratio[j];
+ratio[j] = ratio[i];
+ratio[i] = temp;
+int tempWeight = weights[j];
+weights[j] = weights[i];
+weights[i] = tempWeight;
+int tempValue = values[j];
+values[j] = values[i];
+values[i] = tempValue;
+}
+}
+}
+float maxValue = 0;
+int remainingCapacity = capacity;
+int selectedItems[N];
+for (int i = 0; i < N; i++)
+{
+if (weights[i] <= remainingCapacity)
+{
+selectedItems[i] = 1;
+maxValue += values[i];
+remainingCapacity -= weights[i];
+}
+else
+{
+selectedItems[i] = remainingCapacity / weights[i];
+maxValue += ratio[i] * remainingCapacity;
+remainingCapacity = 0;
+}
+}
+printf("Maximum Value: %.2f\n", maxValue);
+printf("Selected Items:\n");
+for (int i = 0; i < N; i++)
+{
+if (selectedItems[i] != 0)
+{
+printf("Item %d: %.2f , val -> %d , weight -> %d \n", i + 1,
+(float)selectedItems[i], values[i], weights[i]);
+}
+}
+}
+int main()
+{
+int N = 6;
+printf("Enter the number of items: ");
+scanf("%d", &N);
+int weights[N];
+int values[N];
+printf("Enter the weights of the items: ");
+for (int i = 0; i < N; i++)
+{
+scanf("%d", &weights[i]);
+}
+printf("Enter the values of the items: ");
+for (int i = 0; i < N; i++)
+{
+scanf("%d", &values[i]);
+}
+int capacity;
+printf("Enter the maximum capacity of the knapsack: ");
+scanf("%d", &capacity);
+fractionalKnapsack(N, weights, values, capacity);
+}
+
+
+//merge sum
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+int n;
+cin >> n;
+int arr[n];
+for (int i = 0; i < n; i++)
+{
+cin >> arr[i];
+}
+for (int i = 0; i < n; i++)
+{
+int count = 0;
+for (int j = 0; j < n - i - 1; j++)
+{
+if (arr[j] > arr[j + 1])
+{
+int temp = arr[j];
+arr[j] = arr[j + 1];
+arr[j + 1] = temp;
+count++;
+}
+}
+if (count == 0)
+{
+break;
+}
+}
+int sum = 0;
+int ele = arr[0];
+for (int i = 1; i < n; i++)
+{
+ele = ele + arr[i];
+sum += ele;
+}
+cout << sum;
+}
 
